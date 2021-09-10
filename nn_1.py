@@ -9,10 +9,10 @@ import pandas
 from sklearn.model_selection import train_test_split
 
 
-EPOCHS = 500
+EPOCHS = 1000
 X_NORM = 60
 Y_NORM = 945
-TOPOLOGY_ID = 'Topology_11'
+TOPOLOGY_ID = 'nn_1'
 
 
 SAVE_DIR = 'models/' + TOPOLOGY_ID
@@ -34,18 +34,8 @@ y_train = np.array(y_train)
 
 
 model = keras.Sequential([
-    # keras.layers.Dense(32, input_shape=(1,), activation='tanh'),
     keras.layers.Dense(16, input_shape=(1,), activation=tf.keras.layers.LeakyReLU(alpha=0.01)),
-    # keras.layers.Dense(16, activation='tanh'),
     keras.layers.Dense(16, activation=tf.keras.layers.LeakyReLU(alpha=0.01)),
-    # keras.layers.Dense(8, activation=tf.keras.layers.LeakyReLU(alpha=0.01)),
-    # keras.layers.Dense(4, activation=tf.keras.layers.LeakyReLU(alpha=0.01)),
-    # keras.layers.Dense(4, activation=tf.keras.layers.LeakyReLU(alpha=0.01)),
-    # keras.layers.Dense(4, activation=tf.keras.layers.LeakyReLU(alpha=0.01)),
-    # keras.layers.Dense(4, activation=tf.keras.layers.LeakyReLU(alpha=0.01)),
-    # keras.layers.Dense(32, activation='relu'),
-    # keras.layers.Dense(128, activation='relu'),
-    # keras.layers.Dense(32, activation='sigmoid'),
     keras.layers.Dense(1, activation='linear')
 ])
 	
@@ -55,10 +45,7 @@ history = History()
 
 
 model.compile(optimizer='adam',
-            #   optimizer='sgd',
-			      loss='mse',
-            #   loss='mean_squared_logarithmic_error',
-            #   loss='mean_absolute_error',
+              loss='mse',
               metrics=['mean_absolute_error'])
 
 model.fit(x_train, y_train, epochs=EPOCHS, callbacks=[history])
@@ -93,14 +80,3 @@ ax4.grid()
 fig.suptitle(TOPOLOGY_ID)
 fig.canvas.set_window_title(TOPOLOGY_ID)
 plt.show()
-
-'''
-entry = int(input("\nPlease insert a value between 0 and 60: "))
-
-
-while entry >= 0 and entry <= 60:
-	entry = np.array([entry/X_NORM])
-	result = model.predict(entry)
-	print("Predicted value: ", result*Y_NORM)
-	entry = int(input("Please insert a value between 0 and 60: "))
-'''
